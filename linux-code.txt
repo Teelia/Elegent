@@ -1,0 +1,19 @@
+sudo 管理权限
+apt install -y 下载
+curl-fsSL https://ollama.com/install.sh | sh
+
+vim /etc/hosts
+/etc/init.d/network restart
+140.82.112.3       github.com
+151.101.1.194      github.global.ssl.fastly.net
+151.101.65.194     github.global.ssl.fastly.net
+151.101.129.194    github.global.ssl.fastly.net1
+151.101.193.194    github.global.ssl.fastly.net
+185.199.108.153    assets-cdn.github.com
+185.199.109.153    assets-cdn.github.com
+185.199.110.153    assets-cdn.github.com
+185.199.111.153    assets-cdn.github.com
+
+chmod ugo+/-r(w/x) file 修改权限
+
+systemctl start/restart 运行服务

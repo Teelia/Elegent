@@ -1,0 +1,33 @@
+# 构建产物
+**/target/
+
+# Node / 前端构建产物
+**/node_modules/
+**/dist/
+**/tsconfig.tsbuildinfo
+**/package-lock.json
+**/pnpm-lock.yaml
+**/yarn.lock
+
+# 运行时文件
+logs/
+backend/uploads/
+
+# 本地临时文件（Windows 保留名）
+nul
+
+# 前端
+frontend/node_modules/
+frontend/dist/
+
+# 运行时文件
+uploads/
+backend/uploads/
+logs/
+backend/logs/
+backend.zip
+frontend/dist.zip
+Starrocks配置信息.md
+backend/data/files/documents/2025/12/c24ff2c4-183f-4791-9891-c3f0d1109bf4_doc.txt
+backend/data/files/exports/2025/12/2bfbdb4c-a94a-47ba-8ef1-3a93f69b2b6c_smoke_20251222070335126_export.csv
+.idea/

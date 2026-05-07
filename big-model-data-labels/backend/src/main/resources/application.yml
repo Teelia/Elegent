@@ -1,0 +1,185 @@
+# ====================================================
+# Spring Boot 应用配置
+# ====================================================
+
+spring:
+  application:
+    name: 后端通用服务
+
+  # 数据源配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.9.103:3489/data_labeling?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+    username: root
+    password: "3108e22d07d6e6a7"
+
+    # Druid连接池配置
+    druid:
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 1
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      filters: stat,wall
+      # 监控配置
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        login-username: admin
+        login-password: admin
+      web-stat-filter:
+        enabled: true
+        url-pattern: /*
+        exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
+
+  # JPA配置
+  jpa:
+    hibernate:
+      ddl-auto: none  # 不自动更新表结构，使用SQL脚本管理
+    show-sql: false  # 关闭SQL日志输出
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: false  # 关闭SQL格式化
+        # 批量插入优化配置
+        jdbc:
+          batch_size: 5000  # 与代码中的 BATCH_SIZE 保持一致
+        order_inserts: true  # 排序插入语句，提高批量插入效率
+        order_updates: true  # 排序更新语句
+        batch_versioned_data: true  # 批量处理版本化数据
+    open-in-view: false
+
+  # Redis配置
+  redis:
+    host: 113.45.18.96
+    port: 16379
+    password: "Yidu@120349++"
+    database: 8
+    timeout: 30s
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+        max-wait: -1ms
+
+  # 文件上传配置
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB
+      max-request-size: 100MB
+      file-size-threshold: 2KB
+      location: ${file.upload-dir}
+
+  # Jackson配置
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    serialization:
+      write-dates-as-timestamps: false
+    default-property-inclusion: non_null
+
+# ====================================================
+# 服务器配置
+# ====================================================
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+    encoding:
+      charset: UTF-8
+      force: true
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+  tomcat:
+    uri-encoding: UTF-8
+    threads:
+      max: 200
+      min-spare: 10
+
+# ====================================================
+# 日志配置
+# ====================================================
+logging:
+  level:
+    root: INFO
+    com.datalabeling.service.extraction: DEBUG
+    com.datalabeling.service.DeepSeekService: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n"
+  file:
+    path: logs
+    name: logs/data-labeling.log
+    max-size: 10MB
+    max-history: 30
+
+# ====================================================
+# 自定义配置
+# ====================================================
+
+# JWT配置
+jwt:
+  secret: your-secret-key-change-in-production-at-least-256-bits-long
+  expiration: 3600000  # 1小时（毫秒）
+  header: Authorization
+  prefix: "Bearer "
+
+# DeepSeek API配置
+deepseek:
+  api-key: sk-141b9cd1fc2d4044a1fffe7bb8278c15
+  base-url: https://api.deepseek.com/v1
+  model: deepseek-chat
+  timeout: 30000  # 30秒
+  temperature: 0.1  # 降低随机性，提高一致性
+  max-tokens: 10  # 只需要"是"或"否"
+  retry-times: 3  # 重试次数
+
+# 文件上传配置
+file:
+  upload-dir: ./uploads
+  max-size: 52428800  # 50MB
+  allowed-extensions: .xlsx,.xls,.csv
+
+# 任务队列配置（Redis实现）
+task:
+  queue:
+    prefix: data-labeling:task
+    worker-threads: 5  # 并发处理任务的线程数
+    poll-interval: 1000  # 轮询间隔（毫秒）
+
+# WebSocket配置
+websocket:
+  endpoint: /ws
+  allowed-origins: "*"  # 生产环境需要限制
+
+# 分页配置
+pagination:
+  default-page-size: 10
+  max-page-size: 100
+
+# ====================================================
+# Spring Actuator 监控配置
+# ====================================================
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: when-authorized
+  metrics:
+    export:
+      simple:
+        enabled: true

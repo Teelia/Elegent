@@ -1,0 +1,18 @@
+{
+  "includeCoAuthoredBy": false,
+  "permissions": {
+    "allow": [
+      "Skill(ui-ux-pro-max)",
+      "Bash(mvn compile:*)",
+      "Bash(python3:*)",
+      "Bash(mysql:*)",
+      "Bash(mvn clean compile:*)",
+      "Bash(npm run type-check:*)"
+    ],
+    "deny": [],
+    "ask": [],
+    "defaultMode": "dontAsk"
+  },
+  "outputStyle": "engineer-professional",
+  "alwaysThinkingEnabled": true
+}
